@@ -7,9 +7,15 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "bcrypt": "^2.0.1",
     "body-parser": "~1.18.2",
     "cors": "^2.8.4",
     "debug": "~2.6.9",
-    "express": "~4.15.5"
+    "dotenv": "^6.0.0",
+    "express": "~4.15.5",
+    "jsonwebtoken": "^8.3.0",
+    "mysql2": "^1.5.3",
+    "sequelize": "^4.38.0",
+    "sequelize-cli": "^4.0.0"
   }
 }
