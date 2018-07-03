@@ -5,7 +5,7 @@ module.exports = {
         let token = req.headers.token;
         if(!token){
             res.status(400).json({
-                message: 'Token is empty'
+                msg: 'Token is empty'
             })
         }
         try {
@@ -16,8 +16,17 @@ module.exports = {
             }
           } catch(err) {
             res.status(400).json({
-                message: 'Invalid token'
+                msg: 'Invalid token'
             })
           }
+    },
+    isOwner: (req, res, next) => {
+        if(req.decoded.role !== 1) {
+            res.status(401).json({
+                msg: 'Not Authorized'
+            })
+        } else {
+            next();
+        }
     }
 }
