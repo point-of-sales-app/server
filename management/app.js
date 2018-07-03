@@ -1,10 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+require('dotenv').config();
+const app = express();
+
 const index = require('./routes/index');
 const users = require('./routes/users');
-
-const app = express();
+const registration = require('./routes/registration');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -12,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/registration', registration);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
