@@ -7,6 +7,7 @@ const app = express();
 const index = require('./routes/index');
 const users = require('./routes/users');
 const registration = require('./routes/registration');
+const login = require('./routes/login');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/', index);
 app.use('/users', users);
 app.use('/registration', registration);
+app.use('/login', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
