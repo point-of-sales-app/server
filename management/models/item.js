@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Item.associate = function(models) {
     Item.belongsTo(models.Unit);
-    Item.belongsToMany(models.Expense, {through: models.ExpenseItem});
-    Item.hasMany(models.ExpenseItem);
+    Item.belongsTo(models.Restaurant);
+    Item.hasMany(models.Expense);
   };
   return Item;
 };

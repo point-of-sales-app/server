@@ -18,6 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     Restaurant.belongsToMany(models.User, {through: models.UserRestaurant});
     Restaurant.hasMany(models.UserRestaurant);
     Restaurant.hasMany(models.Menu);
+    Restaurant.hasMany(models.Item);
+    Restaurant.hasMany(models.Expense);
   };
   return Restaurant;
 };
