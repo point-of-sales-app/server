@@ -10,11 +10,10 @@ module.exports = {
             email: req.body.email,
             password: hash,
             name: req.body.name,
-            created_at: new Date().toDateString(),
-            updated_at: new Date().toDateString(),
             RoleId: 1
         })
             .then(data => {
+                data.password = 'Hidden'
                 res.status(201).json({
                     msg: 'Success',
                     data
@@ -34,11 +33,10 @@ module.exports = {
             email: req.body.email,
             password: hash,
             name: req.body.name,
-            created_at: new Date().toDateString(),
-            updated_at: new Date().toDateString(),
             RoleId: 2
         })
             .then(data => {
+                data.password = 'Hidden'
                 model.UserRestaurant.create({
                     UserId: data.id,
                     RoleId: data.RoleId,

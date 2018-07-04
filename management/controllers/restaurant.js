@@ -11,9 +11,7 @@ module.exports = {
             name: req.body.name,
             address: req.body.address,
             email: req.body.email,
-            tax: req.body.tax,
-            created_at: new Date().toDateString(),
-            updated_at: new Date().toDateString()
+            tax: req.body.tax
         }).then(data => {
             model.UserRestaurant.create({
                 UserId: req.decoded.id,
