@@ -9,6 +9,7 @@ const users = require('./routes/users');
 const registration = require('./routes/registration');
 const login = require('./routes/login');
 const restaurant = require('./routes/restaurant');
+const menu = require('./routes/menu');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -19,6 +20,7 @@ app.use('/users', users);
 app.use('/registration', registration);
 app.use('/login', login);
 app.use('/restaurant', restaurant);
+app.use('/menu', menu);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
