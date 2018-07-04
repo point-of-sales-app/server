@@ -4,8 +4,8 @@ module.exports = {
     loginAuth: (req, res, next) => {
         let token = req.headers.token;
         if(!token){
-            res.status(400).json({
-                msg: 'Token is empty'
+            return res.status(400).json({
+                msg: 'Credential Required'
             })
         }
         try {

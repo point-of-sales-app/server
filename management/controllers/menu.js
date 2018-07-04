@@ -2,27 +2,42 @@ const model = require('../models');
 
 module.exports = {
     create: (req, res) => {
-        if (req.decoded.role !== 1) {
-            res.status(400).json({
-                msg: 'Unauthorized'
+        if(!req.query.restaurantid) {
+            return res.status(400).json({
+                msg: 'Restaurant id required'
             })
         }
-        model.Restaurant.create({
+        model.Menu.create({
             name: req.body.name,
-            address: req.body.address,
-            email: req.body.email,
-            tax: req.body.tax
+            description: req.body.description,
+            price: req.body.price,
+            RestaurantId: req.query.restaurantid
         }).then(data => {
-            model.UserRestaurant.create({
-                UserId: req.decoded.id,
-                RoleId: req.decoded.role,
-                RestaurantId: data.id
-            }).then(conjuction => {
-                res.status(201).json({
-                    msg: 'Success',
-                    conjuction,
-                    data
-                });
+            res.status(201).json({
+                msg: 'Success',
+                data
+            })
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json({
+                msg: 'Internal Server Error',
+            })
+        })
+    },
+    findAll: (req, res) => {
+        if(!req.query.restaurantid) {
+            return res.status(400).json({
+                msg: 'Restaurant id required'
+            })
+        }
+        model.Menu.findAll({
+            where: {
+                RestaurantId: req.query.restaurantid
+            }
+        }).then(data => {
+            res.status(200).json({
+                msg: 'Success',
+                data
             })
         }).catch(err => {
             console.log(err);
@@ -31,8 +46,22 @@ module.exports = {
             })
         });
     },
+    findById: (req, res) => {
+        model.Menu.findById(req.query.id)
+            .then(data => {
+                res.status(200).json({
+                    msg: 'Success',
+                    data
+                })
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    msg: 'Internal Server Error'
+                })
+            });
+    },
     update: (req, res) => {
-        model.Restaurant.update(req.body, {
+        model.Menu.update(req.body, {
             where: {
                 id: req.query.id
             }
@@ -49,7 +78,7 @@ module.exports = {
         });
     },
     destroy: (req, res) => {
-        model.Restaurant.findById(req.query.id)
+        model.Menu.findById(req.query.id)
             .then(data => {
                 data.destroy()
                 res.status(200).json({
@@ -62,38 +91,4 @@ module.exports = {
                 })
             });
     },
-    findAll: (req, res) => {
-        model.UserRestaurant.findAll({
-            where: {
-                UserId: req.decoded.id
-            },
-            include: [{
-                model: model.Restaurant
-            }]
-        }).then(data => {
-            res.status(201).json({
-                msg: 'Success',
-                data
-            });
-        }).catch(err => {
-            console.log(err);
-            res.status(500).json({
-                msg: 'Internal Server Error'
-            })
-        });
-    },
-    findById: (req, res) => {
-        model.Restaurant.findById(req.query.id)
-            .then(data => {
-                res.status(200).json({
-                    msg: 'Success',
-                    data
-                })
-            }).catch(err => {
-                console.log(err);
-                res.status(500).json({
-                    msg: 'Internal Server Error'
-                })
-            });
-    }
 }
