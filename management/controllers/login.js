@@ -11,7 +11,7 @@ module.exports = {
                 if (data) {
                     let check = bcrypt.compareSync(req.body.password, data.password);
                     if (check) {
-                        const token = jwt.sign({ id: data.id, role: data.RoleId }, process.env.SECRETKEY);
+                        const token = jwt.sign({ id: data.id, name: data.name, role: data.RoleId }, process.env.SECRETKEY);
                         res.status(200).json({
                             msg: 'Login Success',
                             user: {
@@ -34,8 +34,7 @@ module.exports = {
                 }
             })
             .catch(err => {
-                console.log(err);
-                res.status(500).json({
+                res.status(404).json({
                     msg: 'Internal Server Error'
                 })
             })

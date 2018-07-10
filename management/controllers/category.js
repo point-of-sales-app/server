@@ -2,17 +2,14 @@ const model = require('../models');
 
 module.exports = {
     create: (req, res) => {
-        if(!req.query.restaurantid) {
+        if (!req.query.restaurantid) {
             return res.status(400).json({
                 msg: 'Restaurant id required'
             })
         }
-        model.Menu.create({
+        model.Category.create({
             name: req.body.name,
-            description: req.body.description,
-            price: req.body.price,
-            RestaurantId: req.query.restaurantid,
-            CategoryId: req.query.categoryid
+            RestaurantId: req.query.restaurantid
         }).then(data => {
             res.status(201).json({
                 msg: 'Success',
@@ -26,15 +23,18 @@ module.exports = {
         })
     },
     findAll: (req, res) => {
-        if(!req.query.restaurantid) {
+        if (!req.query.restaurantid) {
             return res.status(400).json({
                 msg: 'Restaurant id required'
             })
         }
-        model.Menu.findAll({
+        model.Category.findAll({
             where: {
                 RestaurantId: req.query.restaurantid
-            }
+            },
+            include: [{
+                model: model.Menu
+            }]
         }).then(data => {
             res.status(200).json({
                 msg: 'Success',
@@ -48,8 +48,13 @@ module.exports = {
         });
     },
     findById: (req, res) => {
-        model.Menu.findById(req.query.id)
-            .then(data => {
+        model.Category.findById(
+            req.query.id,
+            {
+                include: [{
+                    model: model.Menu
+                }]
+            }).then(data => {
                 res.status(200).json({
                     msg: 'Success',
                     data
@@ -62,7 +67,7 @@ module.exports = {
             });
     },
     update: (req, res) => {
-        model.Menu.update(req.body, {
+        model.Category.update(req.body, {
             where: {
                 id: req.query.id
             }
@@ -79,11 +84,20 @@ module.exports = {
         });
     },
     destroy: (req, res) => {
-        model.Menu.findById(req.query.id)
+        model.Category.findById(req.query.id)
             .then(data => {
-                data.destroy()
-                res.status(200).json({
-                    msg: 'Success',
+                model.Menu.findAll({
+                    where: {
+                        CategoryId: req.query.id
+                    }
+                }).then(async menus => {
+                    await menus.forEach(element => {
+                        element.destroy();
+                    });
+                    await data.destroy();
+                    res.status(200).json({
+                        msg: 'Success',
+                    });
                 });
             }).catch(err => {
                 console.log(err);
