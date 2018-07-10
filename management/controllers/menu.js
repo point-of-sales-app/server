@@ -1,8 +1,9 @@
 const model = require('../models');
+const sequelize = require('sequelize');
 
 module.exports = {
     create: (req, res) => {
-        if(!req.query.restaurantid) {
+        if (!req.query.restaurantid) {
             return res.status(400).json({
                 msg: 'Restaurant id required'
             })
@@ -26,26 +27,46 @@ module.exports = {
         })
     },
     findAll: (req, res) => {
-        if(!req.query.restaurantid) {
+        if (!req.query.restaurantid) {
             return res.status(400).json({
                 msg: 'Restaurant id required'
             })
         }
-        model.Menu.findAll({
-            where: {
-                RestaurantId: req.query.restaurantid
-            }
-        }).then(data => {
-            res.status(200).json({
-                msg: 'Success',
-                data
-            })
-        }).catch(err => {
-            console.log(err);
-            res.status(500).json({
-                msg: 'Internal Server Error'
-            })
-        });
+        if (req.query.categoryid) {
+            model.Menu.findAll({
+                where: {
+                    RestaurantId: req.query.restaurantid,
+                    CategoryId: req.query.categoryid
+                }
+            }).then(data => {
+                res.status(200).json({
+                    msg: 'Success',
+                    data
+                })
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    msg: 'Internal Server Error'
+                })
+            });
+        } else {
+            model.Menu.findAll({
+                where: {
+                    RestaurantId: req.query.restaurantid
+                },
+                order: sequelize.col('CategoryId')
+            }).then(data => {
+                res.status(200).json({
+                    msg: 'Success',
+                    data
+                })
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    msg: 'Internal Server Error'
+                })
+            });
+        }
     },
     findById: (req, res) => {
         model.Menu.findById(req.query.id)

@@ -31,10 +31,7 @@ module.exports = {
         model.Category.findAll({
             where: {
                 RestaurantId: req.query.restaurantid
-            },
-            include: [{
-                model: model.Menu
-            }]
+            }
         }).then(data => {
             res.status(200).json({
                 msg: 'Success',
@@ -48,13 +45,7 @@ module.exports = {
         });
     },
     findById: (req, res) => {
-        model.Category.findById(
-            req.query.id,
-            {
-                include: [{
-                    model: model.Menu
-                }]
-            }).then(data => {
+        model.Category.findById(req.query.id).then(data => {
                 res.status(200).json({
                     msg: 'Success',
                     data
