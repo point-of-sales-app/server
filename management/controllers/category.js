@@ -1,5 +1,4 @@
 const model = require('../models');
-const sequelize = require('sequelize');
 
 module.exports = {
     create: (req, res) => {
@@ -8,12 +7,9 @@ module.exports = {
                 msg: 'Restaurant id required'
             })
         }
-        model.Menu.create({
+        model.Category.create({
             name: req.body.name,
-            description: req.body.description,
-            price: req.body.price,
-            RestaurantId: req.query.restaurantid,
-            CategoryId: req.query.categoryid
+            RestaurantId: req.query.restaurantid
         }).then(data => {
             res.status(201).json({
                 msg: 'Success',
@@ -32,45 +28,24 @@ module.exports = {
                 msg: 'Restaurant id required'
             })
         }
-        if (req.query.categoryid) {
-            model.Menu.findAll({
-                where: {
-                    RestaurantId: req.query.restaurantid,
-                    CategoryId: req.query.categoryid
-                }
-            }).then(data => {
-                res.status(200).json({
-                    msg: 'Success',
-                    data
-                })
-            }).catch(err => {
-                console.log(err);
-                res.status(500).json({
-                    msg: 'Internal Server Error'
-                })
-            });
-        } else {
-            model.Menu.findAll({
-                where: {
-                    RestaurantId: req.query.restaurantid
-                },
-                order: sequelize.col('CategoryId')
-            }).then(data => {
-                res.status(200).json({
-                    msg: 'Success',
-                    data
-                })
-            }).catch(err => {
-                console.log(err);
-                res.status(500).json({
-                    msg: 'Internal Server Error'
-                })
-            });
-        }
+        model.Category.findAll({
+            where: {
+                RestaurantId: req.query.restaurantid
+            }
+        }).then(data => {
+            res.status(200).json({
+                msg: 'Success',
+                data
+            })
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json({
+                msg: 'Internal Server Error'
+            })
+        });
     },
     findById: (req, res) => {
-        model.Menu.findById(req.query.id)
-            .then(data => {
+        model.Category.findById(req.query.id).then(data => {
                 res.status(200).json({
                     msg: 'Success',
                     data
@@ -83,7 +58,7 @@ module.exports = {
             });
     },
     update: (req, res) => {
-        model.Menu.update(req.body, {
+        model.Category.update(req.body, {
             where: {
                 id: req.query.id
             }
@@ -100,11 +75,20 @@ module.exports = {
         });
     },
     destroy: (req, res) => {
-        model.Menu.findById(req.query.id)
+        model.Category.findById(req.query.id)
             .then(data => {
-                data.destroy()
-                res.status(200).json({
-                    msg: 'Success',
+                model.Menu.findAll({
+                    where: {
+                        CategoryId: req.query.id
+                    }
+                }).then(async menus => {
+                    await menus.forEach(element => {
+                        element.destroy();
+                    });
+                    await data.destroy();
+                    res.status(200).json({
+                        msg: 'Success',
+                    });
                 });
             }).catch(err => {
                 console.log(err);

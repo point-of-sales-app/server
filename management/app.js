@@ -12,6 +12,7 @@ const restaurant = require('./routes/restaurant');
 const menu = require('./routes/menu');
 const item = require('./routes/item');
 const expense = require('./routes/expense');
+const category = require('./routes/category');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -25,6 +26,7 @@ app.use('/restaurant', restaurant);
 app.use('/menu', menu);
 app.use('/item', item);
 app.use('/expense', expense);
+app.use('/category', category);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

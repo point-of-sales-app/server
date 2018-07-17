@@ -18,10 +18,10 @@ module.exports = {
                 RoleId: req.decoded.role,
                 RestaurantId: data.id
             }).then(conjuction => {
+                conjuction.dataValues.Restaurant = data;
                 res.status(201).json({
                     msg: 'Success',
-                    conjuction,
-                    data
+                    data: conjuction
                 });
             })
         }).catch(err => {
@@ -71,7 +71,7 @@ module.exports = {
                 model: model.Restaurant
             }]
         }).then(data => {
-            res.status(201).json({
+            res.status(200).json({
                 msg: 'Success',
                 data
             });
