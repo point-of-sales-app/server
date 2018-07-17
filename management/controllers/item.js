@@ -12,7 +12,10 @@ module.exports = {
             brand: req.body.brand,
             RestaurantId: req.query.restaurantid,
             UnitId: req.body.UnitId
-        }).then(data => {
+        }).then(async data => {
+            const unit = await model.Unit.findById(data.UnitId);
+            data.dataValues.Unit = unit.dataValues;
+            console.log(data)
             res.status(201).json({
                 msg: 'Success',
                 data
@@ -94,5 +97,19 @@ module.exports = {
                     msg: 'Internal Server Error'
                 })
             });
+    },
+    findUnit: (req, res) => {
+        model.Unit.findAll()
+            .then(data => {
+                res.status(200).json({
+                    msg: 'Success',
+                    data
+                });
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    msg: 'Internal Server Error'
+                })
+            })
     }
 }
