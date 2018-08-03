@@ -7,7 +7,7 @@ const { loginAuth, isOwner } = require('../middlewares/auth');
 router.post('/create',loginAuth, isOwner, create);
 router.get('/find',loginAuth, isOwner, findAll);
 router.get('/findDate',loginAuth, isOwner, findDate);
-router.put('/update', loginAuth, isOwner, update);
+router.put('/update', update);
 router.delete('/delete', loginAuth, isOwner, destroy);
 
 module.exports = router;

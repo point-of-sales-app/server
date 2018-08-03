@@ -28,5 +28,14 @@ module.exports = {
         } else {
             next();
         }
+    },
+    isCashier: (req, res, next) => {
+        if(req.decoded.role !== 2) {
+            res.status(401).json({
+                msg: 'Not Authorized'
+            })
+        } else {
+            next();
+        }
     }
 }

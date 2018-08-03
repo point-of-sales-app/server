@@ -12,16 +12,39 @@ module.exports = {
                     let check = bcrypt.compareSync(req.body.password, data.password);
                     if (check) {
                         const token = jwt.sign({ id: data.id, name: data.name, role: data.RoleId }, process.env.SECRETKEY);
-                        res.status(200).json({
-                            msg: 'Login Success',
-                            user: {
-                                id: data.id,
-                                email: data.email,
-                                name: data.name,
-                                role: data.RoleId,
-                                token: token
-                            }
-                        })
+                        if(data.RoleId === 2) {
+                            model.UserRestaurant.findOne({
+                                where: {
+                                    UserId: data.id
+                                },
+                                include: [{
+                                    model: model.Restaurant
+                                }]
+                            }).then(restaurant => {
+                                res.status(200).json({
+                                    msg: 'Login Success',
+                                    user: {
+                                        id: data.id,
+                                        email: data.email,
+                                        name: data.name,
+                                        role: data.RoleId,
+                                        token: token
+                                    },
+                                    restaurant: restaurant.Restaurant
+                                })
+                            })
+                        } else {
+                            res.status(200).json({
+                                msg: 'Login Success',
+                                user: {
+                                    id: data.id,
+                                    email: data.email,
+                                    name: data.name,
+                                    role: data.RoleId,
+                                    token: token
+                                }
+                            })
+                        }
                     }else {
                         res.status(401).json({
                             msg: 'Bad Credentials'

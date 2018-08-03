@@ -94,6 +94,23 @@ module.exports = {
                 })
             });
     },
+    updateUser: (req, res) => {
+        model.User.update(req.body, {
+            where: {
+                id: req.query.id
+            }
+        }).then(data => {
+            res.status(200).json({
+                msg: 'Success',
+                data
+            });
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json({
+                msg: 'Internal Server Error'
+            })
+        });
+    },
     getStaff: (req, res) => {
         model.UserRestaurant.findAll({
             where: {
@@ -123,23 +140,23 @@ module.exports = {
     },
     deleteStaff: (req, res) => {
         model.User.findById(req.query.id)
-        .then(user => {
-            model.UserRestaurant.find({
-                where: {
-                    UserId: req.query.id
-                }
-            }).then(async userRestaurant => {
-                await userRestaurant.destroy();
-                await user.destroy();
-                res.status(200).json({
-                    msg: 'Success'
-                });
-            })
-        }).catch(err => {
-            console.log(err);
-            res.status(500).json({
-                msg: 'Internal Server Error'
-            })
-        });
+            .then(user => {
+                model.UserRestaurant.find({
+                    where: {
+                        UserId: req.query.id
+                    }
+                }).then(async userRestaurant => {
+                    await userRestaurant.destroy();
+                    await user.destroy();
+                    res.status(200).json({
+                        msg: 'Success'
+                    });
+                })
+            }).catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    msg: 'Internal Server Error'
+                })
+            });
     }
 }
