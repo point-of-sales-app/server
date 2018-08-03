@@ -10,6 +10,15 @@ module.exports = (sequelize, DataTypes) => {
     User.belongsTo(models.Role);
     User.belongsToMany(models.Restaurant, {through: models.UserRestaurant});
     User.hasMany(models.UserRestaurant);
+    User.hasMany(models.Transaction);
   };
   return User;
+
+  User.prototype.toJSON =  function () {
+    var values = Object.assign({}, this.get());
+
+    delete values.password;
+    return values;
+  }
+  
 };

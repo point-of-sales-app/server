@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     Restaurant.hasMany(models.Menu);
     Restaurant.hasMany(models.Item);
     Restaurant.hasMany(models.Expense);
+    Restaurant.hasMany(models.Transaction);
   };
   return Restaurant;
 };

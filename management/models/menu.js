@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
   Menu.associate = function(models) {
     Menu.belongsTo(models.Restaurant);
     Menu.belongsTo(models.Category);
+    Menu.hasMany(models.TransactionMenu)
+    Menu.belongsToMany(models.Transaction, {through: models.TransactionMenu});
   };
   return Menu;
 };
