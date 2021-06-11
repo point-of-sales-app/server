@@ -11,8 +11,8 @@ module.exports = {
                 if (data) {
                     let check = bcrypt.compareSync(req.body.password, data.password);
                     if (check) {
-                        const token = jwt.sign({ id: data.id, name: data.name, role: data.RoleId }, process.env.SECRETKEY);
-                        if(data.RoleId === 2) {
+                        const token = jwt.sign({ id: data.id, name: data.name, role: data.RoleId }, process.env.JWT_SECRET);
+                        if(data.RoleId === 2 || data.RoleId === 3) {
                             model.UserRestaurant.findOne({
                                 where: {
                                     UserId: data.id
@@ -21,6 +21,7 @@ module.exports = {
                                     model: model.Restaurant
                                 }]
                             }).then(restaurant => {
+                                console.log(restaurant.Restaurant)
                                 res.status(200).json({
                                     msg: 'Login Success',
                                     user: {

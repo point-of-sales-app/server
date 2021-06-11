@@ -9,7 +9,7 @@ module.exports = {
             })
         }
         try {
-            var decoded = jwt.verify(token, process.env.SECRETKEY);
+            var decoded = jwt.verify(token, process.env.JWT_SECRET);
             if(decoded){
                 req.decoded = decoded;
                 next();
@@ -31,6 +31,15 @@ module.exports = {
     },
     isCashier: (req, res, next) => {
         if(req.decoded.role !== 2) {
+            res.status(401).json({
+                msg: 'Not Authorized'
+            })
+        } else {
+            next();
+        }
+    },
+    isSales: (req, res, next) => {
+        if(req.decoded.role !== 3 && req.decoded.role !== 1) {
             res.status(401).json({
                 msg: 'Not Authorized'
             })

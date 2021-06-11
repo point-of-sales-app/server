@@ -6,7 +6,8 @@ module.exports = {
             total: req.body.total,
             PaymentMethodId: req.body.paymentmethodid,
             RestaurantId: req.query.restaurantid,
-            UserId: req.body.userid
+            UserId: req.body.userid,
+            Discount: req.body.discount
         }).then(data => {
             req.body.transactionMenus.forEach(element => {
                 element.TransactionId = data.id

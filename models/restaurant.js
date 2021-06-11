@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     address: DataTypes.STRING,
     email: DataTypes.STRING,
-    tax: DataTypes.INTEGER
+    tax: DataTypes.INTEGER,
+    phone: DataTypes.STRING
   }, 
   {
     hooks : {

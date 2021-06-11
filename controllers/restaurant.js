@@ -2,6 +2,7 @@ const model = require('../models');
 
 module.exports = {
     create: (req, res) => {
+        console.log(req.body)
         if (req.decoded.role !== 1) {
             res.status(400).json({
                 msg: 'Unauthorized'
@@ -11,6 +12,7 @@ module.exports = {
             name: req.body.name,
             address: req.body.address,
             email: req.body.email,
+            phone: req.body.phone,
             tax: req.body.tax
         }).then(data => {
             model.UserRestaurant.create({

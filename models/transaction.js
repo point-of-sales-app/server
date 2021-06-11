@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     total: DataTypes.INTEGER,
     PaymentMethodId: DataTypes.INTEGER,
     RestaurantId: DataTypes.INTEGER,
-    UserId: DataTypes.INTEGER
+    UserId: DataTypes.INTEGER,
+    Discount: DataTypes.INTEGER
   }, {});
   Transaction.associate = function(models) {
     Transaction.belongsToMany(models.Menu, {through: models.TransactionMenu});
